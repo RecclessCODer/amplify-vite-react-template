@@ -23,6 +23,29 @@ function App() {
     });
   }, []);
 
+  const monitorUpload = async () => {
+    try {
+      const result = await uploadData({
+        path: `picture-submissions/${file!.name}`,
+        data: file!,
+        options: {
+          onProgress: ({ transferredBytes, totalBytes }) => {
+            if (totalBytes) {
+              console.log(
+                `Upload progress ${Math.round(
+                  (transferredBytes / totalBytes) * 100
+                )} %`
+              );
+            }
+          },
+        },
+      }).result;
+      console.log("Path from Response: ", result.path);
+    } catch (error) {
+      console.log("Error : ", error);
+    }
+  };
+
   function deleteTodo(id: string) {
     client.models.Todo.delete({ id });
   }
@@ -53,16 +76,7 @@ function App() {
           </div>
           <div>
             <input type="file" onChange={handleChange} />
-            <button
-              onClick={() =>
-                uploadData({
-                  path: `picture-submissions/${file!.name}`,
-                  data: file!,
-                })
-              }
-            >
-              Upload
-            </button>
+            <button onClick={monitorUpload}>Upload</button>
           </div>
           <button onClick={signOut}>Sign out</button>
         </main>
