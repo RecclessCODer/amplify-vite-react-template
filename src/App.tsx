@@ -27,7 +27,7 @@ function App() {
     <Authenticator>
       {({ signOut, user }) => (
         <main>
-          {/* <h1>My todos</h1>
+          <h1>My todos</h1>
           <button onClick={createTodo}>+ new</button>
           <ul>
             {todos.map((todo) => (
@@ -42,7 +42,7 @@ function App() {
             <a href="https://next-release-dev.d1ywzrxfkb9wgg.amplifyapp.com/react/start/quickstart/vite-react-app/#step-2-add-delete-to-do-functionality">
               Review next step of this tutorial.
             </a>
-          </div> */}
+          </div>
           <button onClick={signOut}>Sign out</button>
         </main>
       )}
