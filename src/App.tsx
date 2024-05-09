@@ -1,31 +1,40 @@
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import { useEffect, useState } from "react";
-import type { Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
+// import { useEffect, useState } from "react";
+// import type { Schema } from "../amplify/data/resource";
+// import { generateClient } from "aws-amplify/data";
+import React from "react";
+import { uploadData } from "aws-amplify/storage";
 
-const client = generateClient<Schema>();
+// const client = generateClient<Schema>();
 
 function App() {
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
+  // const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
 
-  useEffect(() => {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
-    });
-  }, []);
+  const [file, setFile] = React.useState<File>();
 
-  function deleteTodo(id: string) {
-    client.models.Todo.delete({ id });
-  }
+  const handleChange = (event: any) => {
+    setFile(event.target.files[0]);
+  };
 
-  function createTodo() {
-    client.models.Todo.create({ content: window.prompt("Todo content") });
-  }
+  // useEffect(() => {
+  //   client.models.Todo.observeQuery().subscribe({
+  //     next: (data) => setTodos([...data.items]),
+  //   });
+  // }, []);
+
+  // function deleteTodo(id: string) {
+  //   client.models.Todo.delete({ id });
+  // }
+
+  // function createTodo() {
+  //   client.models.Todo.create({ content: window.prompt("Todo content") });
+  // }
 
   return (
     <Authenticator>
-      {({ signOut, user }) => (
+      {
+        /* {({ signOut, user }) => (
         <main>
           <h1>{user?.signInDetails?.loginId}'s todos</h1>
           <button onClick={createTodo}>+ new</button>
@@ -45,7 +54,21 @@ function App() {
           </div>
           <button onClick={signOut}>Sign out</button>
         </main>
-      )}
+      )} */
+        <div>
+          <input type="file" onChange={handleChange} />
+          <button
+            onClick={() =>
+              uploadData({
+                path: `picture-submissions/${file!.name}`,
+                data: file!,
+              })
+            }
+          >
+            Upload
+          </button>
+        </div>
+      }
     </Authenticator>
   );
 }
