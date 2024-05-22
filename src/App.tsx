@@ -13,8 +13,8 @@ function App() {
   const listAudios = async () => {
     try {
       const result = await list({
-        path: "audios/",
-        // Alternatively, path: ({identityId}) => `album/{identityId}/photos/`
+        // 展示当前用户的音频
+        path: ({ identityId }) => `audios/${identityId}/`,
       });
       console.log(result);
     } catch (error) {
@@ -42,7 +42,7 @@ function App() {
   const monitorUpload = async () => {
     try {
       const result = await uploadData({
-        path: `audios/${file!.name}`,
+        path: ({ identityId }) => `audios/${identityId}/${file!.name}`,
         data: file!,
         options: {
           onProgress: ({ transferredBytes, totalBytes }) => {

@@ -11,9 +11,8 @@ export const storage = defineStorage({
       allow.authenticated.to(["read", "write"]),
       allow.guest.to(["read", "write"]),
     ],
-    "audios/*": [
-      allow.authenticated.to(["read", "write", "delete"]),
-      allow.guest.to(["read", "write"]),
+    "audios/{entity_id}/*": [
+      allow.entity("identity").to(["read", "write", "delete"]),
     ],
   }),
 });
